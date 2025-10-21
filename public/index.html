@@ -219,6 +219,30 @@
         }
         .btn-secondary:hover { background: #545b62; }
         
+        /* WhatsApp Button */
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            width: 100%;
+        }
+        .btn-whatsapp:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+        
         /* Results */
         .result { 
             margin-top: 20px; 
@@ -230,6 +254,7 @@
         }
         .result.success { border-left-color: #28a745; background: #d4edda; color: #155724; }
         .result.error { border-left-color: #dc3545; background: #f8d7da; color: #721c24; }
+        .result.warning { border-left-color: #ffc107; background: #fff3cd; color: #856404; }
         .result pre { white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', monospace; font-size: 14px; margin: 0; }
         
         /* Instructions */
@@ -293,6 +318,90 @@
         .selected-platform-info p {
             margin: 5px 0 0;
             color: #6c757d;
+        }
+        
+        /* WhatsApp Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .modal-icon {
+            font-size: 4em;
+            color: #25D366;
+            margin-bottom: 20px;
+        }
+        .modal h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #1a2a6c;
+        }
+        .modal p {
+            margin-bottom: 25px;
+            color: #6c757d;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .modal-btn-primary {
+            background: #25D366;
+            color: white;
+            border: none;
+        }
+        .modal-btn-primary:hover {
+            background: #128C7E;
+        }
+        .modal-btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+        .modal-btn-secondary:hover {
+            background: #545b62;
+        }
+        
+        /* Error Details */
+        .error-details {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 5px;
+            font-size: 0.85em;
+            display: none;
+        }
+        .toggle-error {
+            background: none;
+            border: none;
+            color: #6c757d;
+            text-decoration: underline;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 0.85em;
         }
     </style>
 </head>
@@ -431,6 +540,11 @@
                 </form>
                 
                 <div id="paymentResult" class="result"></div>
+                
+                <!-- WhatsApp Button (shown after successful payment) -->
+                <button id="whatsappBtn" class="btn-whatsapp" style="display: none;">
+                    <i class="fab fa-whatsapp"></i> Contact Support on WhatsApp
+                </button>
             </div>
 
             <div class="card">
@@ -469,8 +583,8 @@
                     <div class="step">
                         <span class="step-number">4</span>
                         <div class="step-content">
-                            <h3>Receive Access</h3>
-                            <p>Get your platform credentials delivered via SMS/Email</p>
+                            <h3>Contact Support via WhatsApp</h3>
+                            <p>After payment, you'll be redirected to WhatsApp to receive your credentials</p>
                         </div>
                     </div>
                 </div>
@@ -479,12 +593,30 @@
         
         <footer>
             <p>Bera Subscription &copy; 2023 | All premium platform subscriptions are 100 KSH</p>
-            <p>Need help? Contact support: support@berasubscription.co.ke</p>
+            <p>Need help? Contact support via WhatsApp: +254 743 982 206</p>
         </footer>
+    </div>
+
+    <!-- WhatsApp Modal -->
+    <div id="whatsappModal" class="modal">
+        <div class="modal-content">
+            <i class="fab fa-whatsapp modal-icon"></i>
+            <h3>Contact Support on WhatsApp</h3>
+            <p>After completing your payment, please contact our support team on WhatsApp to receive your subscription credentials.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-primary" id="openWhatsapp">
+                    Open WhatsApp
+                </button>
+                <button class="modal-btn modal-btn-secondary" id="closeModal">
+                    Later
+                </button>
+            </div>
+        </div>
     </div>
 
     <script>
         const API_BASE = '/api';
+        const WHATSAPP_NUMBER = '254743982206';
         let selectedPlatform = null;
         let paymentMethod = 'mpesa';
 
@@ -522,6 +654,20 @@
                 if (phone.startsWith('0')) phone = '254' + phone.substring(1);
                 else if (phone.startsWith('+')) phone = phone.substring(1);
                 e.target.value = phone;
+            });
+            
+            // WhatsApp button click
+            document.getElementById('whatsappBtn').addEventListener('click', function() {
+                openWhatsAppModal();
+            });
+            
+            // Modal buttons
+            document.getElementById('openWhatsapp').addEventListener('click', function() {
+                redirectToWhatsApp();
+            });
+            
+            document.getElementById('closeModal').addEventListener('click', function() {
+                document.getElementById('whatsappModal').style.display = 'none';
             });
             
             // Test connection on load
@@ -609,11 +755,36 @@
                     }, true);
                     
                     document.getElementById('statusReference').value = result.data.reference;
+                    
+                    // Show WhatsApp button after successful payment
+                    document.getElementById('whatsappBtn').style.display = 'block';
+                    
+                    // Auto-open WhatsApp modal after 3 seconds
+                    setTimeout(openWhatsAppModal, 3000);
                 } else {
-                    showResult('paymentResult', `❌ Error: ${result.error}`, false);
+                    // Handle different types of errors with user-friendly messages
+                    const errorMessage = getFriendlyErrorMessage(result.error);
+                    showResult('paymentResult', errorMessage, false);
+                    
+                    // Add toggle for technical details if needed
+                    if (result.error_details) {
+                        const toggleBtn = document.createElement('button');
+                        toggleBtn.className = 'toggle-error';
+                        toggleBtn.textContent = 'Show technical details';
+                        toggleBtn.onclick = function() {
+                            const details = document.createElement('div');
+                            details.className = 'error-details';
+                            details.innerHTML = `<pre>${JSON.stringify(result.error_details, null, 2)}</pre>`;
+                            document.getElementById('paymentResult').appendChild(details);
+                            details.style.display = 'block';
+                            toggleBtn.style.display = 'none';
+                        };
+                        document.getElementById('paymentResult').appendChild(toggleBtn);
+                    }
                 }
             } catch (error) {
-                showResult('paymentResult', `❌ Network error: ${error.message}`, false);
+                // Handle network errors
+                showResult('paymentResult', `❌ Network error: Please check your internet connection and try again.`, false);
             } finally {
                 submitBtn.disabled = false;
                 btnText.style.display = 'inline';
@@ -639,11 +810,77 @@
                 if (result.success) {
                     showResult('statusResult', result.data, true);
                 } else {
-                    showResult('statusResult', `❌ Error: ${result.error}`, false);
+                    const errorMessage = getFriendlyErrorMessage(result.error);
+                    showResult('statusResult', errorMessage, false);
                 }
             } catch (error) {
-                showResult('statusResult', `❌ Network error: ${error.message}`, false);
+                showResult('statusResult', `❌ Network error: Please check your internet connection and try again.`, false);
             }
+        }
+
+        // Get user-friendly error messages
+        function getFriendlyErrorMessage(error) {
+            if (!error) return '❌ An unknown error occurred. Please try again.';
+            
+            const errorStr = error.toString().toLowerCase();
+            
+            // Check for insufficient balance errors
+            if (errorStr.includes('insufficient') || errorStr.includes('balance')) {
+                return `❌ Payment Failed: Insufficient balance in your M-Pesa account. Please ensure you have at least 100 KSH and try again.`;
+            }
+            
+            // Check for invalid phone number
+            if (errorStr.includes('phone') || errorStr.includes('number') || errorStr.includes('invalid')) {
+                return `❌ Invalid phone number. Please use a valid M-Pesa number in format 2547XXXXXXXX.`;
+            }
+            
+            // Check for timeout errors
+            if (errorStr.includes('timeout') || errorStr.includes('timed out')) {
+                return `❌ Request timeout. Please check your connection and try again.`;
+            }
+            
+            // Check for network errors
+            if (errorStr.includes('network') || errorStr.includes('connection')) {
+                return `❌ Network error. Please check your internet connection and try again.`;
+            }
+            
+            // Check for service unavailable
+            if (errorStr.includes('service') || errorStr.includes('unavailable')) {
+                return `❌ Service temporarily unavailable. Please try again in a few minutes.`;
+            }
+            
+            // Check for bad request (400) errors
+            if (errorStr.includes('400') || errorStr.includes('bad request')) {
+                return `❌ Invalid request. Please check your payment details and try again.`;
+            }
+            
+            // Default error message
+            return `❌ Payment failed: ${error}. Please try again or contact support if the problem persists.`;
+        }
+
+        // Open WhatsApp Modal
+        function openWhatsAppModal() {
+            document.getElementById('whatsappModal').style.display = 'flex';
+        }
+
+        // Redirect to WhatsApp
+        function redirectToWhatsApp() {
+            const platform = document.getElementById('platform').value;
+            const reference = document.getElementById('reference').value;
+            const customerName = document.getElementById('customerName').value || 'Customer';
+            
+            // Create WhatsApp message
+            const message = `Hello Bera Subscription Support!%0A%0A` +
+                           `I just made a payment for ${platform} subscription.%0A` +
+                           `Transaction Reference: ${reference}%0A` +
+                           `Customer Name: ${customerName}%0A%0A` +
+                           `Please provide my subscription credentials.`;
+            
+            // Open WhatsApp
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+            
+            // Close modal
+            document.getElementById('whatsappModal').style.display = 'none';
         }
 
         // Test connection
@@ -660,7 +897,13 @@
         // UI Helper Functions
         function showResult(elementId, data, isSuccess) {
             const element = document.getElementById(elementId);
-            element.innerHTML = typeof data === 'string' ? data : formatResultData(data);
+            
+            if (typeof data === 'string') {
+                element.innerHTML = data;
+            } else {
+                element.innerHTML = formatResultData(data);
+            }
+            
             element.className = `result ${isSuccess ? 'success' : 'error'}`;
             element.style.display = 'block';
             element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
