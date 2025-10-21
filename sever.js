@@ -13,7 +13,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// Initialize PayHero Client
+// Initialize PayHero Client with YOUR credentials
 const client = new PayHeroClient({
   authToken: process.env.AUTH_TOKEN
 });
@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// STK Push Endpoint
+// STK Push Endpoint - REAL IMPLEMENTATION
 app.post('/api/stk-push', async (req, res) => {
   try {
     const { phone_number, amount, external_reference, customer_name } = req.body;
@@ -51,18 +51,21 @@ app.post('/api/stk-push', async (req, res) => {
       });
     }
 
+    // REAL STK Push with your credentials
     const stkPayload = {
       phone_number: formattedPhone,
       amount: parseFloat(amount),
       provider: process.env.DEFAULT_PROVIDER || 'm-pesa',
-      channel_id: process.env.CHANNEL_ID || '1234',
+      channel_id: process.env.CHANNEL_ID, // Your account ID 3342
       external_reference: external_reference || `TRX-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       customer_name: customer_name || 'Customer'
     };
 
-    console.log('Initiating STK Push:', stkPayload);
+    console.log('🔄 Initiating REAL STK Push:', stkPayload);
     
     const response = await client.stkPush(stkPayload);
+    
+    console.log('✅ STK Push Response:', response);
     
     res.json({
       success: true,
@@ -71,7 +74,7 @@ app.post('/api/stk-push', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('STK Push Error:', error);
+    console.error('❌ STK Push Error:', error);
     res.status(500).json({
       success: false,
       error: error.message || 'Failed to initiate STK push'
@@ -79,7 +82,7 @@ app.post('/api/stk-push', async (req, res) => {
   }
 });
 
-// Transaction Status Endpoint
+// Transaction Status Endpoint - REAL IMPLEMENTATION
 app.get('/api/transaction-status/:reference', async (req, res) => {
   try {
     const { reference } = req.params;
@@ -91,7 +94,9 @@ app.get('/api/transaction-status/:reference', async (req, res) => {
       });
     }
 
+    console.log('🔄 Checking REAL transaction status:', reference);
     const response = await client.transactionStatus(reference);
+    console.log('✅ Status Response:', response);
     
     res.json({
       success: true,
@@ -99,7 +104,7 @@ app.get('/api/transaction-status/:reference', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Transaction Status Error:', error);
+    console.error('❌ Transaction Status Error:', error);
     res.status(500).json({
       success: false,
       error: error.message || 'Failed to get transaction status'
@@ -108,17 +113,33 @@ app.get('/api/transaction-status/:reference', async (req, res) => {
 });
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({
-    success: true,
-    message: 'STK Push Gateway is running',
-    timestamp: new Date().toISOString()
-  });
+app.get('/api/health', async (req, res) => {
+  try {
+    // Test the connection by checking service wallet balance
+    const balance = await client.serviceWalletBalance();
+    
+    res.json({
+      success: true,
+      message: 'STK Push Gateway is running and connected to PayHero',
+      account_id: process.env.CHANNEL_ID,
+      timestamp: new Date().toISOString(),
+      balance: balance
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: 'Gateway running but PayHero connection failed',
+      error: error.message
+    });
+  }
 });
 
 // Start server
 app.listen(port, () => {
-  console.log(`🚀 STK Push Gateway running on port ${port}`);
-  console.log(`📍 Access: http://localhost:${port}`);
-  console.log(`✅ Health check: http://localhost:${port}/api/health`);
+  console.log('🚀 STK Push Gateway - REAL IMPLEMENTATION');
+  console.log('📍 Server running on port:', port);
+  console.log('🔑 Account ID:', process.env.CHANNEL_ID);
+  console.log('📱 Provider:', process.env.DEFAULT_PROVIDER);
+  console.log('🌐 Access: http://localhost:' + port);
+  console.log('❤️  Health: http://localhost:' + port + '/api/health');
 });
