@@ -3,257 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STK Push Payment Gateway</title>
+    <title>STK Push Gateway - LIVE</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            min-height: 100vh; padding: 20px; line-height: 1.6; 
         }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        header h1 {
-            color: white;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        header p {
-            color: rgba(255,255,255,0.9);
-            font-size: 1.2em;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-
-        .card h2 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 1.4em;
-            border-bottom: 2px solid #f8f9fa;
-            padding-bottom: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #495057;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
-        }
-
-        small {
-            display: block;
-            margin-top: 5px;
-            color: #6c757d;
-            font-size: 0.85em;
-        }
-
-        .btn-primary {
-            width: 100%;
-            background: linear-gradient(135deg, #007bff, #0056b3);
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .status-check {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .status-input {
-            flex: 1;
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .btn-secondary:hover {
-            background: #545b62;
-        }
-
-        .result {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #007bff;
-            background: #f8f9fa;
-            display: none;
-        }
-
-        .result.success {
-            border-left-color: #28a745;
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .result.error {
-            border-left-color: #dc3545;
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .result pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            margin: 0;
-        }
-
-        .instructions {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .step {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-        }
-
-        .step-number {
-            background: linear-gradient(135deg, #007bff, #0056b3);
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        .step-content h3 {
-            color: #2c3e50;
-            margin-bottom: 5px;
-            font-size: 1.1em;
-        }
-
-        .step-content p {
-            color: #6c757d;
-            font-size: 0.95em;
-        }
-
-        .btn-loading {
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                margin: 10px;
-            }
-            
-            header h1 {
-                font-size: 2em;
-            }
-            
-            .card {
-                padding: 20px;
-            }
-            
-            .status-check {
-                flex-direction: column;
-            }
-            
-            .btn-secondary {
-                width: 100%;
-            }
+        .container { max-width: 600px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 30px; }
+        header h1 { color: white; font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        header p { color: rgba(255,255,255,0.9); font-size: 1.2em; }
+        .card { background: white; border-radius: 12px; padding: 30px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .card h2 { color: #2c3e50; margin-bottom: 20px; font-size: 1.4em; border-bottom: 2px solid #f8f9fa; padding-bottom: 10px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #495057; }
+        input { width: 100%; padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 16px; transition: all 0.3s ease; }
+        input:focus { outline: none; border-color: #007bff; box-shadow: 0 0 0 3px rgba(0,123,255,0.1); }
+        small { display: block; margin-top: 5px; color: #6c757d; font-size: 0.85em; }
+        .btn-primary { width: 100%; background: linear-gradient(135deg, #007bff, #0056b3); color: white; border: none; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; position: relative; }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,123,255,0.3); }
+        .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+        .status-check { display: flex; gap: 10px; margin-bottom: 15px; }
+        .status-input { flex: 1; }
+        .btn-secondary { background: #6c757d; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
+        .btn-secondary:hover { background: #545b62; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 8px; border-left: 4px solid #007bff; background: #f8f9fa; display: none; }
+        .result.success { border-left-color: #28a745; background: #d4edda; color: #155724; }
+        .result.error { border-left-color: #dc3545; background: #f8d7da; color: #721c24; }
+        .result pre { white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', monospace; font-size: 14px; margin: 0; }
+        .instructions { display: flex; flex-direction: column; gap: 20px; }
+        .step { display: flex; align-items: flex-start; gap: 15px; }
+        .step-number { background: linear-gradient(135deg, #007bff, #0056b3); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
+        .step-content h3 { color: #2c3e50; margin-bottom: 5px; font-size: 1.1em; }
+        .step-content p { color: #6c757d; font-size: 0.95em; }
+        .btn-loading { display: none; }
+        .live-badge { background: #28a745; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: bold; margin-left: 10px; }
+        @media (max-width: 768px) { 
+            .container { margin: 10px; }
+            header h1 { font-size: 2em; }
+            .card { padding: 20px; }
+            .status-check { flex-direction: column; }
+            .btn-secondary { width: 100%; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>💳 STK Push Gateway</h1>
-            <p>Initiate mobile payments instantly</p>
+            <h1>💳 STK Push Gateway <span class="live-badge">LIVE</span></h1>
+            <p>Real M-Pesa payments with your Account ID: 3342</p>
         </header>
 
         <div class="main-content">
-            <!-- STK Push Form -->
             <div class="card">
                 <h2>Initiate STK Push</h2>
                 <form id="stkForm">
                     <div class="form-group">
                         <label for="phone">Phone Number:</label>
                         <input type="tel" id="phone" name="phone" placeholder="254712345678" required>
-                        <small>Format: 2547XXXXXXXX</small>
+                        <small>Use a real M-Pesa number in format 2547XXXXXXXX</small>
                     </div>
                     
                     <div class="form-group">
                         <label for="amount">Amount (KES):</label>
-                        <input type="number" id="amount" name="amount" placeholder="100" min="1" step="0.01" required>
+                        <input type="number" id="amount" name="amount" placeholder="10" min="1" step="0.01" required>
                     </div>
                     
                     <div class="form-group">
@@ -268,7 +83,7 @@
                     </div>
                     
                     <button type="submit" class="btn-primary" id="submitBtn">
-                        <span class="btn-text">Initiate Payment</span>
+                        <span class="btn-text">🚀 Initiate Real Payment</span>
                         <span class="btn-loading" style="display: none;">Processing...</span>
                     </button>
                 </form>
@@ -276,46 +91,44 @@
                 <div id="stkResult" class="result"></div>
             </div>
 
-            <!-- Transaction Status Check -->
             <div class="card">
                 <h2>Check Transaction Status</h2>
                 <div class="status-check">
                     <input type="text" id="statusReference" placeholder="Enter transaction reference" class="status-input">
-                    <button onclick="checkTransactionStatus()" class="btn-secondary">Check Status</button>
+                    <button onclick="checkTransactionStatus()" class="btn-secondary">Check Real Status</button>
                 </div>
                 <div id="statusResult" class="result"></div>
             </div>
 
-            <!-- How It Works -->
             <div class="card">
-                <h2>How It Works</h2>
+                <h2>How It Works - REAL PAYMENTS</h2>
                 <div class="instructions">
                     <div class="step">
                         <span class="step-number">1</span>
                         <div class="step-content">
-                            <h3>Enter Details</h3>
-                            <p>Fill in phone number, amount, and optional reference</p>
+                            <h3>Enter Real Details</h3>
+                            <p>Use actual M-Pesa phone number and amount</p>
                         </div>
                     </div>
                     <div class="step">
                         <span class="step-number">2</span>
                         <div class="step-content">
-                            <h3>Initiate Payment</h3>
-                            <p>Click "Initiate Payment" to send STK push to phone</p>
+                            <h3>Initiate Real Payment</h3>
+                            <p>STK push will be sent to the actual phone number</p>
                         </div>
                     </div>
                     <div class="step">
                         <span class="step-number">3</span>
                         <div class="step-content">
                             <h3>Complete on Phone</h3>
-                            <p>Enter M-Pesa PIN on your phone to complete payment</p>
+                            <p>Enter real M-Pesa PIN to complete transaction</p>
                         </div>
                     </div>
                     <div class="step">
                         <span class="step-number">4</span>
                         <div class="step-content">
-                            <h3>Check Status</h3>
-                            <p>Use the reference to check transaction status</p>
+                            <h3>Real Money Movement</h3>
+                            <p>Actual funds will be transferred to your account</p>
                         </div>
                     </div>
                 </div>
@@ -324,10 +137,20 @@
     </div>
 
     <script>
-        // Configuration
         const API_BASE = '/api';
-        
-        // STK Push Form Handler
+
+        // Test connection on load
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const result = await response.json();
+                console.log('🔗 Connection status:', result);
+            } catch (error) {
+                console.error('❌ Connection failed:', error);
+            }
+        });
+
+        // STK Push Form Handler - REAL IMPLEMENTATION
         document.getElementById('stkForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -349,37 +172,39 @@
             };
 
             try {
-                showLoading('stkResult', '🔄 Initiating STK Push...');
+                showLoading('stkResult', '🔄 Initiating REAL STK Push...');
                 
-                // Simulate API call - Replace with actual API endpoint
-                const response = await simulateSTKPush(payload);
+                const response = await fetch(`${API_BASE}/stk-push`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
                 
-                if (response.success) {
+                if (result.success) {
                     showResult('stkResult', {
-                        message: '✅ STK Push initiated successfully!',
-                        reference: response.data.reference,
-                        details: response.data
+                        message: '✅ REAL STK Push initiated successfully!',
+                        reference: result.data.reference,
+                        details: result.data,
+                        note: 'Check your phone for M-Pesa prompt'
                     }, true);
                     
-                    // Auto-fill the status check field
-                    document.getElementById('statusReference').value = response.data.reference;
-                    
-                    // Clear form
+                    document.getElementById('statusReference').value = result.data.reference;
                     e.target.reset();
                 } else {
-                    showResult('stkResult', `❌ Error: ${response.error}`, false);
+                    showResult('stkResult', `❌ Error: ${result.error}`, false);
                 }
             } catch (error) {
                 showResult('stkResult', `❌ Network error: ${error.message}`, false);
             } finally {
-                // Reset button state
                 submitBtn.disabled = false;
                 btnText.style.display = 'inline';
                 btnLoading.style.display = 'none';
             }
         });
 
-        // Check Transaction Status
+        // Check Transaction Status - REAL IMPLEMENTATION
         async function checkTransactionStatus() {
             const reference = document.getElementById('statusReference').value.trim();
             
@@ -389,35 +214,26 @@
             }
 
             try {
-                showLoading('statusResult', '🔄 Checking transaction status...');
+                showLoading('statusResult', '🔄 Checking REAL transaction status...');
                 
-                // Simulate API call - Replace with actual API endpoint
-                const response = await simulateStatusCheck(reference);
+                const response = await fetch(`${API_BASE}/transaction-status/${reference}`);
+                const result = await response.json();
                 
-                if (response.success) {
-                    showResult('statusResult', response.data, true);
+                if (result.success) {
+                    showResult('statusResult', result.data, true);
                 } else {
-                    showResult('statusResult', `❌ Error: ${response.error}`, false);
+                    showResult('statusResult', `❌ Error: ${result.error}`, false);
                 }
             } catch (error) {
                 showResult('statusResult', `❌ Network error: ${error.message}`, false);
             }
         }
 
-        // Utility Functions
         function showResult(elementId, data, isSuccess) {
             const element = document.getElementById(elementId);
-            
-            if (typeof data === 'string') {
-                element.innerHTML = data;
-            } else {
-                element.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-            }
-            
+            element.innerHTML = typeof data === 'string' ? data : `<pre>${JSON.stringify(data, null, 2)}</pre>`;
             element.className = `result ${isSuccess ? 'success' : 'error'}`;
             element.style.display = 'block';
-            
-            // Scroll to result
             element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
@@ -428,88 +244,15 @@
             element.style.display = 'block';
         }
 
-        // Phone number formatting
         document.getElementById('phone').addEventListener('blur', function(e) {
             let phone = e.target.value.trim();
-            
-            if (phone.startsWith('0')) {
-                phone = '254' + phone.substring(1);
-            } else if (phone.startsWith('+')) {
-                phone = phone.substring(1);
-            }
-            
+            if (phone.startsWith('0')) phone = '254' + phone.substring(1);
+            else if (phone.startsWith('+')) phone = phone.substring(1);
             e.target.value = phone;
         });
 
-        // Auto-generate reference if empty
         document.getElementById('reference').addEventListener('focus', function(e) {
-            if (!e.target.value) {
-                e.target.value = `ORDER-${Date.now()}`;
-            }
-        });
-
-        // Simulate STK Push API Call
-        async function simulateSTKPush(payload) {
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
-            // In a real implementation, you would make a fetch request to your backend
-            // Example:
-            /*
-            const response = await fetch(`${API_BASE}/stk-push`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload)
-            });
-            return await response.json();
-            */
-            
-            // Simulated successful response
-            return {
-                success: true,
-                data: {
-                    reference: `TRX-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-                    status: "QUEUED",
-                    message: "STK push sent successfully",
-                    checkout_request_id: `ws_CO_${Date.now()}`
-                }
-            };
-        }
-
-        // Simulate Status Check API Call
-        async function simulateStatusCheck(reference) {
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            
-            // In a real implementation, you would make a fetch request to your backend
-            // Example:
-            /*
-            const response = await fetch(`${API_BASE}/transaction-status/${reference}`);
-            return await response.json();
-            */
-            
-            // Simulated response with random status
-            const statuses = ["PENDING", "SUCCESS", "FAILED"];
-            const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-            
-            return {
-                success: true,
-                data: {
-                    reference: reference,
-                    status: randomStatus,
-                    third_party_reference: `MPE${Date.now()}`,
-                    amount: 100,
-                    phone_number: "254712345678",
-                    timestamp: new Date().toISOString()
-                }
-            };
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('STK Push Gateway initialized');
+            if (!e.target.value) e.target.value = `ORDER-${Date.now()}`;
         });
     </script>
 </body>
