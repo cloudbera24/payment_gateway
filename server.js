@@ -57,11 +57,11 @@ app.post('/api/stk-push', async (req, res) => {
       amount: parseFloat(amount),
       provider: process.env.DEFAULT_PROVIDER || 'm-pesa',
       channel_id: process.env.CHANNEL_ID, // Your account ID 3342
-      external_reference: external_reference || `TRX-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      external_reference: external_reference || `CHEGE-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       customer_name: customer_name || 'Customer'
     };
 
-    console.log('🔄 Initiating REAL STK Push:', stkPayload);
+    console.log('🔄 Initiating REAL STK Push for CHEGE TECH:', stkPayload);
     
     const response = await client.stkPush(stkPayload);
     
@@ -120,7 +120,7 @@ app.get('/api/health', async (req, res) => {
     
     res.json({
       success: true,
-      message: 'STK Push Gateway is running and connected to PayHero',
+      message: 'CHEGE TECH SUBSCRIPTIONS is running and connected to PayHero',
       account_id: process.env.CHANNEL_ID,
       timestamp: new Date().toISOString(),
       balance: balance
@@ -136,7 +136,7 @@ app.get('/api/health', async (req, res) => {
 
 // Start server
 app.listen(port, () => {
-  console.log('🚀 STK Push Gateway - REAL IMPLEMENTATION');
+  console.log('🚀 CHEGE TECH SUBSCRIPTIONS - LIVE');
   console.log('📍 Server running on port:', port);
   console.log('🔑 Account ID:', process.env.CHANNEL_ID);
   console.log('📱 Provider:', process.env.DEFAULT_PROVIDER);
