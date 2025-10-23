@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STK Push Gateway - LIVE</title>
+    <title> BERA TECH STK PUSH GATEWAY</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -52,8 +52,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>💳 STK Push Gateway <span class="live-badge">LIVE</span></h1>
-            <p>Real M-Pesa payments with your Account ID: 3342</p>
+            <h1>💳 BERA TECH STK PUSH GATEWAY <span class="live-badge">LIVE</span></h1>
+            <p>Powerd by Bera tech</p>
         </header>
 
         <div class="main-content">
@@ -62,7 +62,7 @@
                 <form id="stkForm">
                     <div class="form-group">
                         <label for="phone">Phone Number:</label>
-                        <input type="tel" id="phone" name="phone" placeholder="254712345678" required>
+                        <input type="tel" id="phone" name="phone" placeholder="254743982206" required>
                         <small>Use a real M-Pesa number in format 2547XXXXXXXX</small>
                     </div>
                     
@@ -83,7 +83,7 @@
                     </div>
                     
                     <button type="submit" class="btn-primary" id="submitBtn">
-                        <span class="btn-text">🚀 Initiate Real Payment</span>
+                        <span class="btn-text">🚀 Initiate Payment</span>
                         <span class="btn-loading" style="display: none;">Processing...</span>
                     </button>
                 </form>
@@ -106,7 +106,7 @@
                     <div class="step">
                         <span class="step-number">1</span>
                         <div class="step-content">
-                            <h3>Enter Real Details</h3>
+                            <h3>Enter your actual Details</h3>
                             <p>Use actual M-Pesa phone number and amount</p>
                         </div>
                     </div>
@@ -121,7 +121,7 @@
                         <span class="step-number">3</span>
                         <div class="step-content">
                             <h3>Complete on Phone</h3>
-                            <p>Enter real M-Pesa PIN to complete transaction</p>
+                            <p>Enter your M-Pesa PIN to complete transaction</p>
                         </div>
                     </div>
                     <div class="step">
@@ -172,7 +172,7 @@
             };
 
             try {
-                showLoading('stkResult', '🔄 Initiating REAL STK Push...');
+                showLoading('stkResult', '🔄 Initiating  STK Push...');
                 
                 const response = await fetch(`${API_BASE}/stk-push`, {
                     method: 'POST',
@@ -184,7 +184,7 @@
                 
                 if (result.success) {
                     showResult('stkResult', {
-                        message: '✅ REAL STK Push initiated successfully!',
+                        message: '✅ STK Push initiated successfully!',
                         reference: result.data.reference,
                         details: result.data,
                         note: 'Check your phone for M-Pesa prompt'
@@ -214,7 +214,7 @@
             }
 
             try {
-                showLoading('statusResult', '🔄 Checking REAL transaction status...');
+                showLoading('statusResult', '🔄 Checking  transaction status...');
                 
                 const response = await fetch(`${API_BASE}/transaction-status/${reference}`);
                 const result = await response.json();
