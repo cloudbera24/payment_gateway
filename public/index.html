@@ -1,209 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CHEGE TECH SUBSCRIPTIONS</title>
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{
-      font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
-      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-      min-height:100vh;padding:20px;line-height:1.6;
-    }
-    .container{max-width:600px;margin:0 auto}
-    header{text-align:center;margin-bottom:30px}
-    header h1{color:white;font-size:2.2em;margin-bottom:10px;text-shadow:2px 2px 4px rgba(0,0,0,0.3)}
-    header p{color:rgba(255,255,255,0.9);font-size:1.1em}
-    .card{background:white;border-radius:12px;padding:25px;margin-bottom:20px;box-shadow:0 8px 25px rgba(0,0,0,0.1)}
-    .card h2{color:#2c3e50;margin-bottom:15px;font-size:1.4em;border-bottom:2px solid #f8f9fa;padding-bottom:8px;text-align:center}
-    .plans{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .plan-btn{
-      background:linear-gradient(135deg,#007bff,#0056b3);
-      color:white;border:none;padding:12px;border-radius:8px;font-weight:600;
-      cursor:pointer;transition:0.3s all;font-size:14px;text-align:center
-    }
-    .plan-btn:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,123,255,0.3)}
-    .form-group{margin-bottom:20px}
-    label{display:block;margin-bottom:6px;font-weight:600;color:#495057}
-    input{width:100%;padding:12px 15px;border:2px solid #e9ecef;border-radius:8px;font-size:16px;transition:all .3s ease}
-    input:focus{outline:none;border-color:#007bff;box-shadow:0 0 0 3px rgba(0,123,255,0.1)}
-    .btn-primary{
-      width:100%;background:linear-gradient(135deg,#007bff,#0056b3);color:white;
-      border:none;padding:15px;border-radius:8px;font-size:16px;font-weight:600;
-      cursor:pointer;transition:all .3s ease;position:relative
-    }
-    .btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,123,255,0.3)}
-    .btn-primary:disabled{opacity:.7;cursor:not-allowed;transform:none}
-    .result{margin-top:20px;padding:15px;border-radius:8px;border-left:4px solid #007bff;background:#f8f9fa;display:none}
-    .result.success{border-left-color:#28a745;background:#d4edda;color:#155724}
-    .result.error{border-left-color:#dc3545;background:#f8d7da;color:#721c24}
-    .result pre{white-space:pre-wrap;word-wrap:break-word;font-family:'Courier New',monospace;font-size:14px;margin:0}
-    footer{text-align:center;margin-top:20px;color:rgba(255,255,255,0.8);font-size:0.9em}
-    @media(max-width:600px){.plans{grid-template-columns:1fr}}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STK Push Gateway - LIVE</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            min-height: 100vh; padding: 20px; line-height: 1.6; 
+        }
+        .container { max-width: 600px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 30px; }
+        header h1 { color: white; font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        header p { color: rgba(255,255,255,0.9); font-size: 1.2em; }
+        .card { background: white; border-radius: 12px; padding: 30px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .card h2 { color: #2c3e50; margin-bottom: 20px; font-size: 1.4em; border-bottom: 2px solid #f8f9fa; padding-bottom: 10px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #495057; }
+        input { width: 100%; padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 16px; transition: all 0.3s ease; }
+        input:focus { outline: none; border-color: #007bff; box-shadow: 0 0 0 3px rgba(0,123,255,0.1); }
+        small { display: block; margin-top: 5px; color: #6c757d; font-size: 0.85em; }
+        .btn-primary { width: 100%; background: linear-gradient(135deg, #007bff, #0056b3); color: white; border: none; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; position: relative; }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,123,255,0.3); }
+        .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+        .status-check { display: flex; gap: 10px; margin-bottom: 15px; }
+        .status-input { flex: 1; }
+        .btn-secondary { background: #6c757d; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
+        .btn-secondary:hover { background: #545b62; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 8px; border-left: 4px solid #007bff; background: #f8f9fa; display: none; }
+        .result.success { border-left-color: #28a745; background: #d4edda; color: #155724; }
+        .result.error { border-left-color: #dc3545; background: #f8d7da; color: #721c24; }
+        .result pre { white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', monospace; font-size: 14px; margin: 0; }
+        .instructions { display: flex; flex-direction: column; gap: 20px; }
+        .step { display: flex; align-items: flex-start; gap: 15px; }
+        .step-number { background: linear-gradient(135deg, #007bff, #0056b3); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
+        .step-content h3 { color: #2c3e50; margin-bottom: 5px; font-size: 1.1em; }
+        .step-content p { color: #6c757d; font-size: 0.95em; }
+        .btn-loading { display: none; }
+        .live-badge { background: #28a745; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: bold; margin-left: 10px; }
+        @media (max-width: 768px) { 
+            .container { margin: 10px; }
+            header h1 { font-size: 2em; }
+            .card { padding: 20px; }
+            .status-check { flex-direction: column; }
+            .btn-secondary { width: 100%; }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>CHEGE TECH SUBSCRIPTIONS</h1>
-      <p>Pay securely with M-Pesa (Account ID 3342)</p>
-    </header>
+    <div class="container">
+        <header>
+            <h1>💳 STK Push Gateway <span class="live-badge">LIVE</span></h1>
+            <p>Real M-Pesa payments with your Account ID: 3342</p>
+        </header>
 
-    <!-- Subscription Plans -->
-    <div class="card">
-      <h2>Select a Subscription Plan</h2>
-      <div class="plans" id="plans"></div>
+        <div class="main-content">
+            <div class="card">
+                <h2>Initiate STK Push</h2>
+                <form id="stkForm">
+                    <div class="form-group">
+                        <label for="phone">Phone Number:</label>
+                        <input type="tel" id="phone" name="phone" placeholder="254712345678" required>
+                        <small>Use a real M-Pesa number in format 2547XXXXXXXX</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="amount">Amount (KES):</label>
+                        <input type="number" id="amount" name="amount" placeholder="10" min="1" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reference">Transaction Reference:</label>
+                        <input type="text" id="reference" name="reference" placeholder="ORDER-001">
+                        <small>Leave blank for auto-generated reference</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerName">Customer Name (Optional):</label>
+                        <input type="text" id="customerName" name="customerName" placeholder="John Doe">
+                    </div>
+                    
+                    <button type="submit" class="btn-primary" id="submitBtn">
+                        <span class="btn-text">🚀 Initiate Real Payment</span>
+                        <span class="btn-loading" style="display: none;">Processing...</span>
+                    </button>
+                </form>
+                
+                <div id="stkResult" class="result"></div>
+            </div>
+
+            <div class="card">
+                <h2>Check Transaction Status</h2>
+                <div class="status-check">
+                    <input type="text" id="statusReference" placeholder="Enter transaction reference" class="status-input">
+                    <button onclick="checkTransactionStatus()" class="btn-secondary">Check Real Status</button>
+                </div>
+                <div id="statusResult" class="result"></div>
+            </div>
+
+            <div class="card">
+                <h2>How It Works - REAL PAYMENTS</h2>
+                <div class="instructions">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <div class="step-content">
+                            <h3>Enter Real Details</h3>
+                            <p>Use actual M-Pesa phone number and amount</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <div class="step-content">
+                            <h3>Initiate Real Payment</h3>
+                            <p>STK push will be sent to the actual phone number</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <div class="step-content">
+                            <h3>Complete on Phone</h3>
+                            <p>Enter real M-Pesa PIN to complete transaction</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <div class="step-content">
+                            <h3>Real Money Movement</h3>
+                            <p>Actual funds will be transferred to your account</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Payment Section -->
-    <div class="card" id="paymentCard" style="display:none">
-      <h2 id="selectedPlanTitle">Selected Plan</h2>
-      <form id="stkForm">
-        <div class="form-group">
-          <label for="phone">Phone Number:</label>
-          <input type="tel" id="phone" name="phone" placeholder="07XXXXXXXX or 2547XXXXXXXX" required />
-        </div>
-        <div class="form-group">
-          <label for="customerName">Your Name (optional):</label>
-          <input type="text" id="customerName" name="customerName" placeholder="John Doe" />
-        </div>
-        <input type="hidden" id="amount" name="amount" />
-        <input type="hidden" id="reference" name="reference" />
-        <button type="submit" class="btn-primary" id="submitBtn">
-          <span class="btn-text">🚀 Pay Now</span>
-          <span class="btn-loading" style="display:none">Processing...</span>
-        </button>
-      </form>
-      <div id="stkResult" class="result"></div>
-    </div>
+    <script>
+        const API_BASE = '/api';
 
-    <!-- Transaction Status Check -->
-    <div class="card" id="statusCard">
-      <h2>Check Payment Status</h2>
-      <form id="statusForm">
-        <div class="form-group">
-          <label for="checkRef">Transaction Reference:</label>
-          <input type="text" id="checkRef" name="checkRef" placeholder="Enter your transaction reference" required />
-        </div>
-        <button type="submit" class="btn-primary" id="statusBtn">
-          🔍 Check Status
-        </button>
-      </form>
-      <div id="statusResult" class="result"></div>
-    </div>
-
-    <footer>
-      Powered by PayHero · Managed by CHEGE TECH
-    </footer>
-  </div>
-
-  <script>
-    const API_BASE = '/api';
-    const WHATSAPP_NUMBER = '254781287381';
-    const plans = [
-      { name:'Netflix',price:220 },
-      { name:'Spotify Premium',price:180 },
-      { name:'Showmax',price:150 },
-      { name:'Prime Video',price:200 },
-      { name:'Express VPN',price:150 },
-      { name:'Nord VPN',price:250 },
-      { name:'Surfshark VPN',price:300 },
-      { name:'WhatsApp Bot',price:60 },
-      { name:'HDO Premium',price:150 },
-      { name:'Unlimited Panels',price:100 },
-      { name:'Canva Pro',price:80 },
-      { name:'CapCut Pro',price:300 }
-    ];
-
-    const plansDiv=document.getElementById('plans');
-    const paymentCard=document.getElementById('paymentCard');
-    const selectedPlanTitle=document.getElementById('selectedPlanTitle');
-    const amountInput=document.getElementById('amount');
-    const referenceInput=document.getElementById('reference');
-
-    // Render plans dynamically
-    plans.forEach(plan=>{
-      const btn=document.createElement('button');
-      btn.className='plan-btn';
-      btn.textContent=`${plan.name} – KES ${plan.price}`;
-      btn.onclick=()=>{
-        selectedPlanTitle.textContent=`${plan.name} (KES ${plan.price})`;
-        amountInput.value=plan.price;
-        referenceInput.value=`CHEGE-${plan.name.replace(/\s+/g,'-').toUpperCase()}-${Date.now()}`;
-        paymentCard.style.display='block';
-        window.scrollTo({top:paymentCard.offsetTop,behavior:'smooth'});
-      };
-      plansDiv.appendChild(btn);
-    });
-
-    // STK Push form handler
-    document.getElementById('stkForm').addEventListener('submit',async(e)=>{
-      e.preventDefault();
-      const submitBtn=document.getElementById('submitBtn');
-      const btnText=submitBtn.querySelector('.btn-text');
-      const btnLoading=submitBtn.querySelector('.btn-loading');
-      submitBtn.disabled=true;btnText.style.display='none';btnLoading.style.display='inline';
-
-      const phone=document.getElementById('phone').value.trim();
-      const name=document.getElementById('customerName').value.trim()||'Customer';
-      const amount=amountInput.value;
-      const reference=referenceInput.value;
-      const payload={phone_number:phone,amount,external_reference:reference,customer_name:name};
-
-      try{
-        showLoading('stkResult','🔄 Initiating Payment...');
-        const res=await fetch(`${API_BASE}/stk-push`,{
-          method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)
+        // Test connection on load
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const result = await response.json();
+                console.log('🔗 Connection status:', result);
+            } catch (error) {
+                console.error('❌ Connection failed:', error);
+            }
         });
-        const result=await res.json();
 
-        if(result.success){
-          const ref=result.data?.reference||reference;
-          showResult('stkResult',{message:'✅ Payment successful!',details:result.data},true);
-          const msg=`Hello CHEGE TECH! I just subscribed for ${selectedPlanTitle.textContent} via M-Pesa. TransactionRef: ${ref}`;
-          const url=`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-          setTimeout(()=>window.location.href=url,2000);
-        }else{
-          showResult('stkResult',`❌ ${result.message||result.error}`,false);
+        // STK Push Form Handler - REAL IMPLEMENTATION
+        document.getElementById('stkForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const btnLoading = submitBtn.querySelector('.btn-loading');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline';
+            
+            const formData = new FormData(e.target);
+            const payload = {
+                phone_number: formData.get('phone'),
+                amount: formData.get('amount'),
+                external_reference: formData.get('reference') || '',
+                customer_name: formData.get('customerName') || ''
+            };
+
+            try {
+                showLoading('stkResult', '🔄 Initiating REAL STK Push...');
+                
+                const response = await fetch(`${API_BASE}/stk-push`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    showResult('stkResult', {
+                        message: '✅ REAL STK Push initiated successfully!',
+                        reference: result.data.reference,
+                        details: result.data,
+                        note: 'Check your phone for M-Pesa prompt'
+                    }, true);
+                    
+                    document.getElementById('statusReference').value = result.data.reference;
+                    e.target.reset();
+                } else {
+                    showResult('stkResult', `❌ Error: ${result.error}`, false);
+                }
+            } catch (error) {
+                showResult('stkResult', `❌ Network error: ${error.message}`, false);
+            } finally {
+                submitBtn.disabled = false;
+                btnText.style.display = 'inline';
+                btnLoading.style.display = 'none';
+            }
+        });
+
+        // Check Transaction Status - REAL IMPLEMENTATION
+        async function checkTransactionStatus() {
+            const reference = document.getElementById('statusReference').value.trim();
+            
+            if (!reference) {
+                alert('Please enter a transaction reference');
+                return;
+            }
+
+            try {
+                showLoading('statusResult', '🔄 Checking REAL transaction status...');
+                
+                const response = await fetch(`${API_BASE}/transaction-status/${reference}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    showResult('statusResult', result.data, true);
+                } else {
+                    showResult('statusResult', `❌ Error: ${result.error}`, false);
+                }
+            } catch (error) {
+                showResult('statusResult', `❌ Network error: ${error.message}`, false);
+            }
         }
-      }catch(err){
-        showResult('stkResult',`❌ Network Error: ${err.message}`,false);
-      }finally{
-        submitBtn.disabled=false;btnText.style.display='inline';btnLoading.style.display='none';
-      }
-    });
 
-    // Check Payment Status form handler
-    document.getElementById('statusForm').addEventListener('submit',async(e)=>{
-      e.preventDefault();
-      const ref=document.getElementById('checkRef').value.trim();
-      if(!ref)return alert('Please enter a reference.');
-      showLoading('statusResult','🔄 Checking transaction status...');
-      try{
-        const res=await fetch(`${API_BASE}/transaction-status/${ref}`);
-        const data=await res.json();
-        if(data.success){
-          showResult('statusResult',data.data,true);
-        }else{
-          showResult('statusResult',`❌ ${data.error||'Could not fetch status'}`,false);
+        function showResult(elementId, data, isSuccess) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = typeof data === 'string' ? data : `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            element.className = `result ${isSuccess ? 'success' : 'error'}`;
+            element.style.display = 'block';
+            element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
-      }catch(err){
-        showResult('statusResult',`❌ Error: ${err.message}`,false);
-      }
-    });
 
-    // Helper display functions
-    function showResult(id,data,ok){
-      const el=document.getElementById(id);
-      el.innerHTML=typeof data==='string'?data:`<pre>${JSON.stringify(data,null,2)}</pre>`;
-      el.className=`result ${ok?'success':'error'}`;el.style.display='block';
-      el.scrollIntoView({behavior:'smooth',block:'nearest'});
-    }
-    function showLoading(id,msg){
-      const el=document.getElementById(id);
-      el.innerHTML=`<div>${msg}</div>`;el.className='result';el.style.display='block';
-    }
-  </script>
+        function showLoading(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div>${message}</div>`;
+            element.className = 'result';
+            element.style.display = 'block';
+        }
+
+        document.getElementById('phone').addEventListener('blur', function(e) {
+            let phone = e.target.value.trim();
+            if (phone.startsWith('0')) phone = '254' + phone.substring(1);
+            else if (phone.startsWith('+')) phone = phone.substring(1);
+            e.target.value = phone;
+        });
+
+        document.getElementById('reference').addEventListener('focus', function(e) {
+            if (!e.target.value) e.target.value = `ORDER-${Date.now()}`;
+        });
+    </script>
 </body>
-</html>
+  </html>
